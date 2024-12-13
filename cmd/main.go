@@ -14,7 +14,7 @@ func main() {
 	}
 
 	originalPilotPath := os.Args[1]
-	fmt.Printf("Converting %s\n", originalPilotPath)
+	fmt.Printf("Converting pilot %s\n", originalPilotPath)
 
 	resourceForkParser, err := resourcefork.NewParser(originalPilotPath)
 	if err != nil {
@@ -25,9 +25,20 @@ func main() {
 	primaryPilotResource := resourceForkParser.GetResource("NpïL", 128)
 	secondaryPilotResource := resourceForkParser.GetResource("NpïL", 129)
 
-	err = evn.ConvertPilot(originalPilotPath, primaryPilotResource.Data, secondaryPilotResource.Data, secondaryPilotResource.Name)
+	convertedPilotPath := originalPilotPath + ".converted.plt"
+
+	convertedPilot, err := os.Create(convertedPilotPath)
 	if err != nil {
-		fmt.Printf("Error converting pilot: %s", err)
+		fmt.Printf("Error creating new converted pilot file: %s", err)
 		os.Exit(3)
 	}
+	defer convertedPilot.Close()
+
+	err = evn.ConvertPilot(convertedPilot, primaryPilotResource.Data, secondaryPilotResource.Data, secondaryPilotResource.Name)
+	if err != nil {
+		fmt.Printf("Error converting pilot: %s", err)
+		os.Exit(4)
+	}
+
+	fmt.Printf("Converted pilot to %s\n", convertedPilotPath)
 }

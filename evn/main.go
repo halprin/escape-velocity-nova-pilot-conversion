@@ -5,16 +5,8 @@ import (
 	"os"
 )
 
-func ConvertPilot(originalPilotPath string, primaryPilotData []byte, secondaryPilotData []byte, shipName string) error {
-	convertedPilotPath := originalPilotPath + ".converted.plt"
-
-	convertedPilot, err := os.Create(convertedPilotPath)
-	if err != nil {
-		return fmt.Errorf("error creating new converted pilot file: %w", err)
-	}
-	defer convertedPilot.Close()
-
-	err = convertPrimaryPilotData(primaryPilotData, convertedPilot)
+func ConvertPilot(convertedPilot *os.File, primaryPilotData []byte, secondaryPilotData []byte, shipName string) error {
+	err := convertPrimaryPilotData(primaryPilotData, convertedPilot)
 	if err != nil {
 		return fmt.Errorf("error converting primary pilot data: %w", err)
 	}
