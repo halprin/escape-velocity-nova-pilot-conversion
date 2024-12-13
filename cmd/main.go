@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/halprin/escape-velocity-nova-pilot-conversion/evn"
 	"github.com/halprin/escape-velocity-nova-pilot-conversion/resourcefork"
 	"os"
 )
@@ -21,11 +22,12 @@ func main() {
 		os.Exit(2)
 	}
 
-	fmt.Println(resourceForkParser.GetTypes())
+	primaryPilotResource := resourceForkParser.GetResource("NpïL", 128)
+	secondaryPilotResource := resourceForkParser.GetResource("NpïL", 129)
 
-	//err = evn.ConvertPilot(originalPilotPath, originalAltPilotDataPath)
-	//if err != nil {
-	//	fmt.Printf("Error converting pilot: %s", err)
-	//	os.Exit(3)
-	//}
+	err = evn.ConvertPilot(originalPilotPath, primaryPilotResource.Data, secondaryPilotResource.Data, secondaryPilotResource.Name)
+	if err != nil {
+		fmt.Printf("Error converting pilot: %s", err)
+		os.Exit(3)
+	}
 }

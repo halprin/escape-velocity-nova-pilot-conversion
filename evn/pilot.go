@@ -7,20 +7,15 @@ import (
 	"os"
 )
 
-func convertPilotData(originalPilotDataPath string, convertedPilot *os.File) error {
-	pilotData, err := os.ReadFile(originalPilotDataPath)
-	if err != nil {
-		return fmt.Errorf("error reading pilot data: %w", err)
-	}
+func convertPrimaryPilotData(primaryPilotData []byte, convertedPilot *os.File) error {
+	decryptedPrimaryPilotData := SimpleDecrypt(primaryPilotData)
 
-	decryptedPilotData := SimpleDecrypt(pilotData)
-
-	firstChunk := readPilotData(&decryptedPilotData, 0x295e)
+	firstChunk := readPilotData(&decryptedPrimaryPilotData, 0x295e)
 	flippedDecryptedFirstChunk := endian.Flip(firstChunk)
 
-	flippedDecryptedMissionData := convertMissionData(&decryptedPilotData)
+	flippedDecryptedMissionData := convertMissionData(&decryptedPrimaryPilotData)
 
-	lastChunk := decryptedPilotData
+	lastChunk := decryptedPrimaryPilotData
 	flippedDecryptedLastChunk := endian.Flip(lastChunk)
 
 	flippedPilotData := append(flippedDecryptedFirstChunk, flippedDecryptedMissionData...)
@@ -29,7 +24,7 @@ func convertPilotData(originalPilotDataPath string, convertedPilot *os.File) err
 	lengthBytes := make([]byte, 4)
 	binary.LittleEndian.PutUint32(lengthBytes, uint32(len(flippedPilotData)))
 
-	_, err = convertedPilot.Write(lengthBytes)
+	_, err := convertedPilot.Write(lengthBytes)
 	if err != nil {
 		return fmt.Errorf("error writing pilot data size: %w", err)
 	}

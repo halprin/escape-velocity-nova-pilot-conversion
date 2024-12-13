@@ -54,7 +54,7 @@ func (p *Parser) parse() error {
 	}
 
 	typeListOffset := 28
-	nameListOffset := binary.BigEndian.Uint16(mapData[8:10])
+	nameListOffset := binary.BigEndian.Uint16(mapData[26:28])
 
 	// Get type list
 	if len(mapData) < int(typeListOffset)+2 {
@@ -98,7 +98,7 @@ func (p *Parser) parse() error {
 			// Get resource name
 			var name string
 			if nameOffset != 0xFFFF { // 0xFFFF indicates no name
-				namePos := typeListOffset + int(nameListOffset) + int(nameOffset)
+				namePos := int(nameListOffset) + int(nameOffset)
 				if len(mapData) > namePos {
 					nameLen := int(mapData[namePos])
 					if len(mapData) >= namePos+1+nameLen {
