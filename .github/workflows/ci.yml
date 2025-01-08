@@ -25,4 +25,4 @@ jobs:
       run: make compile-arm64
 
     - name: Build for AMD64
-      run: compile-amd64
+      run: make compile-amd64
