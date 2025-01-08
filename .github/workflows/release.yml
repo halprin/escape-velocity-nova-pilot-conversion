@@ -25,7 +25,7 @@ jobs:
           p12-file-base64: ${{ secrets.CERTIFICATES_P12 }}
           p12-password: ${{ secrets.CERTIFICATES_P12_PASSWORD }}
 
-      - uses: halprin/macos-sign-package-notarize@26a6dacef84db02c5edf3b6ad39e6ec41e80a32f
+      - uses: halprin/macos-sign-package-notarize@v1
         with:
           path-to-binary: ./evn-pilot-conversion
           signing-identity: ${{ secrets.SIGNING_IDENTITY }}
