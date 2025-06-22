@@ -31,12 +31,12 @@ jobs:
 
       - uses: halprin/macos-sign-package-notarize@v2
         with:
-          path-to-binary: ./evn-pilot-conversion
+          path-to-binaries: ./evn-pilot-conversion
           signing-identity: ${{ secrets.SIGNING_IDENTITY }}
-          apple-id: ${{ secrets.APPLE_ID }}
-          app-specific-password: ${{ secrets.APP_SPECIFIC_PASSWORD }}
-          apple-developer-team-id: ${{ secrets.APPLE_DEVELOPER_TEAM_ID }}
-          extra-files: README.md LICENSE
+          app-store-connect-key: ${{ secrets.MACOS_APP_STORE_CONNECT_KEY }}
+          app-store-connect-key-id: ${{ secrets.MACOS_APP_STORE_CONNECT_KEY_ID }}
+          app-store-connect-issuer-id: ${{ secrets.MACOS_APP_STORE_CONNECT_ISSUER_ID }}
+          archive-files: ./evn-pilot-conversion README.md LICENSE
           archive-disk-name: EVN Pilot Conversion
           archive-file-path: ./evn-pilot-conversion-${{ github.event.release.tag_name }}.dmg
 
