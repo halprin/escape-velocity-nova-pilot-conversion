@@ -2,6 +2,6 @@ module github.com/halprin/escape-velocity-nova-pilot-conversion
 
 go 1.26.0
 
-toolchain go1.27.2
+toolchain go1.27.3
 
 require golang.org/x/text v0.43.0
